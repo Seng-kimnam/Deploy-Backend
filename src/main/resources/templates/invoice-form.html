@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room Rent Invoice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+    />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #374151;
+            background-color: #f9fafb;
+            line-height: 1.5;
+        }
+        .invoice-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .items-start {
+            align-items: flex-start;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+        }
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        .gap-6 {
+            gap: 1.5rem;
+        }
+        .mb-1 {
+            margin-bottom: 0.25rem;
+        }
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+        .mb-3 {
+            margin-bottom: 0.75rem;
+        }
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        .mt-4 {
+            margin-top: 1rem;
+        }
+        .p-4 {
+            padding: 1rem;
+        }
+        .p-6 {
+            padding: 1.5rem;
+        }
+        .company-name {
+            font-size: 1.875rem;
+            color: #2A9D8F;
+            font-weight: 700;
+        }
+        .text-primary {
+            color: #10B981;
+        }
+        .text-gray-500 {
+            color: #6B7280;
+        }
+        .text-gray-600 {
+            color: #4B5563;
+        }
+        .text-sm {
+            font-size: 0.875rem;
+        }
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+        .text-3xl {
+            font-size: 1.875rem;
+        }
+        .font-medium {
+            font-weight: 500;
+        }
+        .font-semibold {
+            font-weight: 600;
+        }
+        .bg-white {
+            background-color: white;
+        }
+        .border {
+            border: 1px solid #E5E7EB;
+        }
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .invoice-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+        }
+        .invoice-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .invoice-table tr:last-child td {
+            border-bottom: none;
+        }
+        .amount-value {
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        .qr-code {
+            width: 14rem;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        .qr-header {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.7rem 0;
+            border-radius: 8px 8px 0 0;
+        }
+        .bank-info {
+            padding: 1rem;
+        }
+        .note-item {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .note-item:before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: #9ca3af;
+        }
+        .w-8 {
+            width: 2rem;
+        }
+        .h-8 {
+            height: 2rem;
+        }
+        .w-32 {
+            width: 8rem;
+        }
+        .h-32 {
+            height: 8rem;
+        }
+        .bg-blue-600 {
+            background-color: #2563EB;
+        }
+        .text-blue-600 {
+            color: #2563EB;
+        }
+        .text-white {
+            color: white;
+        }
+        .rounded {
+            border-radius: 0.25rem;
+        }
+        .border-t {
+            border-top: 1px solid #E5E7EB;
+        }
+        .pt-4 {
+            padding-top: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .invoice-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .flex-col-mobile {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="invoice-container border border-black">
+    <!-- Header Section -->
+    <h1 class="company-name mb-1">
+        LUM<span style="color: #EC5E59">N</span>OV
+    </h1>
+
+    <!-- Address and Contact -->
+    <table>
+        <tr>
+            <td style="border: none; text-align: left; vertical-align: top;">
+                <p style="font-weight: bold" class="text-gray-600" th:text="${houseName}"></p>
+                <p class="text-gray-600" th:text="${houseAddress}"></p>
+            </td>
+            <td style="border: none; text-align: right; vertical-align: top;">
+                <p>Telegram <span th:text="${ownerPhoneNumber}"></span></p>
+                <p style="font-weight: bold">OWNER CONTACT <span th:text="${ownerPhoneNumber}"></span></p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Invoice Title -->
+    <h2 class="text-2xl font-semibold text-center text-gray-700 mb-8">
+        Invoice For Rent Room
+    </h2>
+
+    <!-- Invoice Info Section -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6 mb-8">
+        <table>
+            <tr>
+                <td style="border: none; text-align: left; vertical-align: top;">
+                    <p class="text-gray-500 mb-1">Billed to</p>
+                    <h3 style="color: #6ab7b9;" class="font-medium" th:text="${renterName}"></h3>
+                    <p style="font-weight: bold">#Room <span th:text="${roomNumber}"></span></p>
+                    <p th:text="${renterPhoneNumber}"></p>
+                </td>
+                <td style="border: none; text-align: center; vertical-align: top;">
+                    <p class="text-gray-500 mb-1">Invoice number</p>
+                    <p style="font-weight: bold">#<span th:text="${billNo}"></span></p>
+                </td>
+                <td style="border: none; text-align: right; vertical-align: top;">
+                    <p class="text-gray-500">Invoice of (USD)</p>
+                    <p style="font-weight: bold" class="amount-value text-2xl">$ <span th:text="${totalAmount}"></span></p>
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <td style="border: none; text-align: left; vertical-align: top;">
+                    <p class="text-gray-500 mb-1">Room Fees</p>
+                    <p style="font-weight: bold">$ <span th:text="${rentAmount}"></span></p>
+                </td>
+                <td style="border: none; text-align: center; vertical-align: top;">
+                    <p class="text-gray-500 mb-1">Utilities Fees</p>
+                    <p style="font-weight: bold">$ <span th:text="${totalAmountOfElectricityUse + totalAmountOfWaterUse}"></span></p>
+                </td>
+                <td style="border: none; text-align: right; vertical-align: top;">
+                    <p class="text-gray-500 mb-1">Due date</p>
+                    <p style="font-weight: bold" th:text="${#dates.format(dueDate, 'dd MMMM, yyyy')}"></p>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Invoice Table -->
+        <table class="invoice-table w-full mb-6">
+            <thead>
+            <tr>
+                <th>DESCRIPTION</th>
+                <th>OLD MONTH</th>
+                <th>NEW MONTH</th>
+                <th>QUANTITY</th>
+                <th>UNIT PRICE</th>
+                <th class="text-right">AMOUNT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Electricity</td>
+                <td style="text-align: center;">
+                    <span th:text="${oldElectricityUse}"></span> Kwh
+                </td>
+                <td style="text-align: center;">
+                    <span th:text="${newElectricityUse}"></span> Kwh
+                </td>
+                <td style="text-align: center;">
+                    <span th:text="${electricityUse}"></span> Kwh
+                </td>
+                <td style="text-align: center;">$ <span th:text="${electricityPerKilowattHour}"></span></td>
+                <td class="text-right">$ <span th:text="${totalAmountOfElectricityUse}"></span></td>
+            </tr>
+            <tr>
+                <td>Water</td>
+                <td style="text-align: center;">
+                    <span th:text="${oldWaterUse}"></span> m³
+                </td>
+                <td style="text-align: center;">
+                    <span th:text="${newWaterUse}"></span> m³
+                </td>
+                <td style="text-align: center;">
+                    <span th:text="${waterUse}"></span> m³
+                </td>
+                <td style="text-align: center;">
+                    $ <span th:text="${waterPerCubicMeter}"></span>
+                </td>
+                <td class="text-right">$ <span th:text="${totalAmountOfWaterUse}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Invoice Summary -->
+        <table>
+            <tr>
+                <td style="border: none; text-align: right;">
+                    <span class="text-gray-600">Subtotal (Utilities): </span>
+                    <span>$ <span th:text="${totalAmountOfElectricityUse + totalAmountOfWaterUse}"></span></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: none; text-align: right;">
+                    <span class="text-gray-600">Room Fees: </span>
+                    <span>$ <span th:text="${rentAmount}"></span></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: none; text-align: right;">
+                    <span class="text-gray-600">Amount Owed: </span>
+                    <span>$ <span th:text="${amountOwed}"></span></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="border: none; text-align: right;">
+                    <span>Total Amount: </span>
+                    <span>$ <span th:text="${totalAmount}"></span></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Payment Method Section -->
+    <h3 class="text-xl font-medium mb-4">Payment Method</h3>
+    <div class="flex flex-col-mobile mb-8">
+        <div class="qr-code w-40">
+            <div class="qr-header text-center font-medium">KHQR</div>
+            <div style="padding-left: 1rem; padding-right: 1rem; padding-top: 1rem;">
+                <p class="font-weight: bold; mb-1" th:text="${accountName}"></p>
+                <span>$ <span style="font-weight: bold" class="font-medium" th:text="${totalAmount}"></span></span>
+            </div>
+            <div>
+                <img style="width: 100%; height: 100%;" src="cid:qrCodeImage" alt="QR Code"/>
+            </div>
+        </div>
+        <div class="flex-1">
+            <div style="margin-left: 10px" class="bank-info mb-4">
+                <div class="text-gray-500 text-sm">
+                    Scan to pay with KHQR or transfer to Bill Account No
+                </div>
+
+                <div class="mb-2">
+                    <p style="font-weight: bold" th:text="${accountNo}"></p>
+                </div>
+
+                <div class="mb-2">
+                    <p class="text-gray-500 text-sm">Bill Account Name</p>
+                    <p style="font-weight: bold" th:text="${accountName}"></p>
+                </div>
+
+                <div class="mb-2">
+                    <p class="text-gray-500 text-sm">Powered By</p>
+                    <span style="font-size: 20px; font-weight: bold; color: blue;">WeBill<span style="color: darkorange">365</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Section -->
+    <div class="mb-4">
+        <h3 style="color: red;" class="text-lg font-medium mb-3">Note:</h3>
+        <ul class="text-gray-600">
+            <li class="note-item">
+                The tenant must pay the rent before the due date.
+            </li>
+            <li class="note-item">
+                The tenant must maintain cleanliness and hygiene in the rented room.
+            </li>
+            <li class="note-item">
+                The tenant is responsible for any damage to the property in the
+                room.
+            </li>
+            <li class="note-item">Smoking is not allowed in the room.</li>
+            <li class="note-item">Pets are not allowed.</li>
+            <li class="note-item">
+                The tenant must give one month's notice before moving out.
+            </li>
+            <li class="note-item">
+                The tenant is responsible for the loss or damage of the key.
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

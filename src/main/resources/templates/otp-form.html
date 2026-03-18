@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Account - OTP Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2A9D8F;
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            font-size: 28px; /* Slightly larger */
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+        .greeting {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .otp-container {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .otp-label {
+            font-size: 14px;
+            color: #718096;
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .otp-code {
+            font-size: 36px;
+            font-weight: 800;
+            color: #38a169;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            text-shadow: 0 2px 4px rgba(56, 161, 105, 0.2);
+        }
+
+        .otp-timer {
+            font-size: 14px;
+            color: #e53e3e;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .security-notice {
+            background: #fef5e7;
+            border-left: 4px solid #f6ad55;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
+
+        .security-notice h3 {
+            color: #c05621;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .security-notice p {
+            color: #744210;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .icon {
+            margin-right: 8px;
+        }
+
+        .footer {
+            background: #f7fafc;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer p {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .company-info {
+            color: #a0aec0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 12px;
+            }
+
+            .header, .content, .footer {
+                padding: 30px 20px;
+            }
+
+            .otp-code {
+                font-size: 28px;
+                letter-spacing: 4px;
+            }
+
+            .greeting {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <div class="logo">🔐</div>
+        <h1>Account Verification</h1>
+        <p>Secure login verification code</p>
+    </div>
+
+    <div class="content">
+        <h2 class="greeting">
+            Dear <span th:text="${user}"></span>,
+        </h2>
+        <p class="message">
+            We received a request to sign in to your account. To complete the verification process,
+            please use the One-Time Password (OTP) below.
+        </p>
+
+        <div class="otp-container">
+            <div class="otp-label">Your Verification Code</div>
+            <div class="otp-code" th:text="${otp}"></div>
+            <div class="otp-timer">⏰ Expires in 5 minutes</div>
+        </div>
+
+        <div class="security-notice">
+            <h3><span class="icon">🛡️</span>Security Notice</h3>
+            <p>
+                • Never share this code with anyone<br>
+                • Our team will never ask for this code<br>
+                • If you didn't request this, please ignore this email
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>This code was requested from CGLaw Team.</p>
+        <p>If this wasn't you, please contact our support team immediately.</p>
+        <div class="company-info">
+            <strong>CGLaw</strong><br>
+            Near 12 St 323, Toul Kork, Phnom Penh City<br>
+            © 2024 All rights reserved
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--  <head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <title>Title</title>-->
+<!--    <style>-->
+<!--      body {-->
+<!--        font-family: Arial, sans-serif;-->
+<!--        background-color: #f5f5f5;-->
+<!--        padding: 20px;-->
+<!--      }-->
+
+<!--      .email-container {-->
+<!--        max-width: 500px;-->
+<!--        margin: auto;-->
+<!--        background-color: #ffffff;-->
+<!--        padding: 30px;-->
+<!--        border-radius: 8px;-->
+<!--        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
+<!--        text-align: center;-->
+<!--      }-->
+
+<!--      .email-title {-->
+<!--        font-size: 36px;-->
+<!--        font-weight: bold;-->
+<!--        color: #4285f4;-->
+<!--        margin-bottom: 20px;-->
+<!--      }-->
+
+<!--      .otp-code {-->
+<!--        font-size: 36px;-->
+<!--        font-weight: bold;-->
+<!--        color: #34a853;-->
+<!--        margin: 20px 0;-->
+<!--      }-->
+
+<!--      .textUser {-->
+<!--        font-size: 36px;-->
+<!--        font-weight: bold;-->
+<!--        margin: 20px 0;-->
+<!--      }-->
+
+<!--      .footer {-->
+<!--        margin-top: 30px;-->
+<!--        font-size: 12px;-->
+<!--        color: #888;-->
+<!--      }-->
+
+<!--      hr {-->
+<!--        margin: 20px 0;-->
+<!--        border: none;-->
+<!--        border-top: 1px solid #ddd;-->
+<!--      }-->
+<!--    </style>-->
+<!--  </head>-->
+<!--  <body>-->
+<!--    <div class="email-container">-->
+<!--      <div class="email-title">Email OTP</div>-->
+<!--      <hr />-->
+<!--      <p class="textUser">-->
+<!--        Dear-->
+<!--        <span th:text="${user}"></span>-->
+<!--      </p>-->
+<!--      <p>Your One-Time Password (OTP) is:</p>-->
+<!--      <div class="otp-code" th:text="${otp}"></div>-->
+<!--      <p>-->
+<!--        Please use this OTP to complete your login process. Do not share this-->
+<!--        code with anyone.-->
+<!--      </p>-->
+<!--      <p>Thank you for using Email OTP!</p>-->
+<!--    </div>-->
+<!--  </body>-->
+<!--</html>-->

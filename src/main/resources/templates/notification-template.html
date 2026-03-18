@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${subject}">Your Request Status</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f9;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #4a4a4a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    img {
+      border: 0;
+      display: block;
+    }
+
+    .wrapper {
+      width: 100%;
+      background-color: #f4f7f9;
+      padding: 30px 0;
+    }
+
+    .main {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      background-color: #002d5b;
+      color: #ffffff;
+      text-align: center;
+      padding: 28px 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .content {
+      padding: 35px 30px;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .status-badge {
+      display: inline-block;
+      background-color: #eef4ff;
+      color: #004080;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1f2d3d;
+      margin: 0 0 20px 0;
+    }
+
+    .details-box {
+      background-color: #f9fbfd;
+      border: 1px solid #e6edf3;
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin: 25px 0;
+    }
+
+    .details-box p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .profile-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #f4f7f9;
+      margin: 0 auto 20px auto;
+    }
+
+    .button-container {
+      text-align: center;
+      padding: 10px 0 5px 0;
+    }
+
+    .button {
+      background-color: #c5a059;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 14px 30px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 22px 20px;
+      font-size: 12px;
+      color: #3f3d3d;
+      background-color: #c4bfbf;
+      line-height: 1.6;
+    }
+
+    @media screen and (max-width: 600px) {
+      .content {
+        padding: 24px 20px !important;
+      }
+
+      .section-title {
+        font-size: 20px !important;
+      }
+
+      .button {
+        padding: 12px 22px !important;
+        font-size: 14px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <table role="presentation" class="main" align="center">
+    <tr>
+      <td class="header">
+        <img
+                src="https://res.cloudinary.com/diqseuweg/image/upload/v1762068621/Group_1_wziare.png"
+                alt="GCLaw Group"
+                style="max-width:180px;margin:0 auto;"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="content">
+
+        <div th:if="${requestStatus != null}"
+             class="status-badge"
+             th:style="
+         ${requestStatus.name() == 'PENDING'} ? 'background-color:#fff3cd;color:#856404;' :
+         (${requestStatus.name() == 'APPROVED'} ? 'background-color:#d4edda;color:#155724;' :
+         (${requestStatus.name() == 'IN_PROGRESS'} ? 'background-color:#d1ecf1;color:#0c5460;' :
+         (${requestStatus.name() == 'DONE'} ? 'background-color:#e2d9f3;color:#4b2e83;' :
+         (${requestStatus.name() == 'REJECTED'} ? 'background-color:#f8d7da;color:#721c24;' :
+         'background-color:#eef4ff;color:#004080;'))))"
+             th:text="${#strings.replace(requestStatus.name(), '_', ' ')}">
+          PENDING
+        </div>
+
+        <h2 class="section-title" th:text="${title}">Your Request Update</h2>
+
+<!--        <div th:if="${clientImage != null and !#strings.isEmpty(clientImage)}">-->
+<!--          <img th:src="${clientImage}" alt="Client Image" class="profile-img">-->
+<!--        </div>-->
+
+        <p>
+          Dear <strong th:text="${user}">Client</strong>,
+        </p>
+
+        <p th:utext="${message}">
+          Thank you for contacting GCLaw Group. We are writing to inform you about the latest update regarding your request.
+        </p>
+
+        <div class="details-box">
+          <p th:if="${clientEmail != null}">
+            <span class="label">Email:</span>
+            <span th:text="${clientEmail}">client@example.com</span>
+          </p>
+
+<!--          <p th:if="${requestStatus != null}">-->
+<!--            <span class="label">Status:</span>-->
+<!--            <span th:style="-->
+<!--      ${requestStatus.name() == 'PENDING'} ? 'color:#856404;font-weight:bold;' :-->
+<!--      (${requestStatus.name() == 'APPROVE'} ? 'color:#155724;font-weight:bold;' :-->
+<!--      (${requestStatus.name() == 'IN_PROGRESS'} ? 'color:#0c5460;font-weight:bold;' :-->
+<!--      (${requestStatus.name() == 'DONE'} ? 'color:#4b2e83;font-weight:bold;' :-->
+<!--      (${requestStatus.name() == 'REJECTED'} ? 'color:#721c24;font-weight:bold;' :-->
+<!--      'color:#004080;font-weight:bold;'))))"-->
+<!--                  th:text="${#strings.replace(requestStatus.name(), '_', ' ')}">-->
+<!--    PENDING-->
+<!--  </span>-->
+<!--          </p>-->
+          <p th:if="${feedBack != null and !#strings.isEmpty(feedBack)}">
+            <span class="label">Feedback:</span>
+            <span th:text="${feedBack}">Admins feedback will display here</span>
+          </p>
+          <p th:if="${complaint != null and !#strings.isEmpty(complaint)}">
+            <span class="label">Request Summary:</span>
+            <span th:text="${complaint}">Complaint summary here</span>
+          </p>
+        </div>
+
+<!--        <div th:if="${caseLink != null and !#strings.isEmpty(caseLink)}" class="button-container">-->
+<!--          <a th:href="${caseLink}" class="button" target="_blank">View Request Details</a>-->
+<!--        </div>-->
+
+        <p style="margin-top: 28px;">
+          Best regards,<br>
+          <strong>GCLaw Group</strong>
+        </p>
+
+      </td>
+    </tr>
+
+    <tr>
+      <td class="footer">
+        <p>
+          GCLaw Group | #73, St. M-12, Borey Penh Hout<br><br>
+          The Star Mera Garden, Sangkat Cheung Aek, Khan Dangkor, Phnom Penh, Cambodia
+        </p>
+        <p>&copy; 2026 GCLaw Group. All rights reserved.</p>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>
