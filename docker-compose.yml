@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123  # change this!
+      POSTGRES_PASSWORD: 123
       POSTGRES_DB: lawfirm_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -24,23 +24,27 @@ services:
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: Password123#   # change in production!
+      MINIO_ROOT_PASSWORD: Password123#
     ports:
       - "9000:9000"
       - "9001:9001"
     volumes:
       - storage:/data
 
-  lawfirm-app:                              # your Spring Boot app
-    image: lawfirm-api-image:latest
-    build: .                                # remove if you already have an image
+  lawfirm-app:
+    build: .
+    container_name: lawfirm-app
+    restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/lawfirm_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lawfirm_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
-
+  storage:

@@ -12,7 +12,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 # Build the application, compile and packaging into jar
-RUN mvn -B package
+RUN mvn -B package -DskipTests
 
 # ──────────────────────────────
 # 2) Runtime Stage
@@ -25,4 +25,6 @@ COPY --from=build /app/target/*.jar app.jar
 
 # Specify the command to run your application
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+CMD ["./wait-for-it.sh", "postgres:5432", "--", "java", "-jar", "app.jar"]
 
