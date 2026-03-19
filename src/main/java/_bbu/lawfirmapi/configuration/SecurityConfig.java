@@ -41,9 +41,12 @@ public class SecurityConfig {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
-                                "/v3/api-docs/**",
+
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
+                                "/api/v1/auth/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
                                 "/api/v1/auths/login",
                                 "/api/v1/auths/register",
                                 "/api/v1/auths/reset-password",

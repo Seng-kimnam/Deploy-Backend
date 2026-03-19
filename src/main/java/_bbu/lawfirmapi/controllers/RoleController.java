@@ -42,19 +42,19 @@ public class RoleController extends BaseResponse {
                 HttpStatus.OK ,
                 roleService.findRoleByKeyword(keyword));
     }
-    @SecurityRequirement(name = "bearerAuth")
+//    @SecurityRequirement(name = "bearerAuth")
     @PostMapping
     public ResponseEntity<ApiResponse<RoleResponse>> createNewRole(@RequestBody RoleRequest roleRequest){
         return responseEntity(true , "Created new role success" , HttpStatus.CREATED ,roleService.createNewRoleList(roleRequest));
     }
 
-    @SecurityRequirement(name = "bearerAuth")
+//    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{roleId}")
     public ResponseEntity<ApiResponse<RoleResponse>> updateNewRole (@PathVariable Integer roleId , @RequestBody RoleRequest newRoleRequest) {
 
         return responseEntity(true, "update role success", HttpStatus.ACCEPTED, roleService.updateRoleById(roleId, newRoleRequest));
     }
-    @SecurityRequirement(name = "bearerAuth")
+//    @SecurityRequirement(name = "bearerAuth")
 
     @DeleteMapping("/{roleId}")
     public ResponseEntity<ApiResponse<Void>> deleteRoleById(@PathVariable Integer roleId) {
