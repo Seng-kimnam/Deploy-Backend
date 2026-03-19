@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 "/api/v1/cases/**",
                                 "/api/v1/expertises/**",
                                 "/api/v1/app-user/**",
-                                "/api/v1/files/**",
+//                                "/api/v1/files/**",
                                 "/api/v1/services/**",
 //                                "/api/v1/clients/**",
                                 "/api/v1/documents/**",
